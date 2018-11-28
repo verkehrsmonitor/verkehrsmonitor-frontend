@@ -64,10 +64,10 @@ class MainHeader extends PureComponent {
             <Menu.Item key="dashboard">
               <Link to="/">Dashboard</Link>
             </Menu.Item>
-            <Menu.Item key="about">
+            <Menu.Item key="ueber">
               <Link to="/ueber">Über</Link>
             </Menu.Item>
-            <Menu.Item key="imprint">
+            <Menu.Item key="impressum">
               <Link to="/impressum">Impressum</Link>
             </Menu.Item>
           </Menu>
