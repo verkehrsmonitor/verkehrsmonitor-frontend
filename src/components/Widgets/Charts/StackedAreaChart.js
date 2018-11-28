@@ -110,12 +110,16 @@ export default class StackedAreaChart extends Component {
     legendLabel: ''
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(this.props, nextProps);
+  state = {
+    dimensions: [500, 160]
   }
 
   componentDidMount() {
+    this.setDimensions();
+  }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(this.props, nextProps) || !isEqual(this.state.dimensions, nextState.dimensions);
   }
 
   getTooltipContent = ({ data, parentLine }) => {
@@ -183,9 +187,12 @@ export default class StackedAreaChart extends Component {
     }
   ]
 
-  getDimension() {
+  setDimensions() {
     const bounds = this.wrapper ? this.wrapper.getBoundingClientRect() : false;
-    return bounds ? [bounds.width - 32, 160] : [100, 160];
+    console.log(this.wrapper);
+    this.setState({
+      dimensions: bounds ? [bounds.width - 32, 160] : [100, 160]
+    });
   }
 
   render() {
@@ -201,7 +208,7 @@ export default class StackedAreaChart extends Component {
       legendLabel
     } = this.props;
 
-    const dimensions = this.getDimension();
+    console.log(this.state.dimensions);
 
     return (
       <StyledStackedAreaChartWrapper ref={(ref) => { this.wrapper = ref; }}>
@@ -214,7 +221,7 @@ export default class StackedAreaChart extends Component {
             />
           </TitleWrapper>
           <XYFrame
-            size={dimensions}
+            size={this.state.dimensions}
             lines={data}
             xScaleType={d3ScaleTime()}
             lineDataAccessor="data"
