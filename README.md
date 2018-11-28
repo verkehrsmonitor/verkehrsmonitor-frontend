@@ -1,3 +1,7 @@
+# verkehrsmonitor
+
+![](vm-screenshot.png)
+
 ## Installation
 
 ```sh
