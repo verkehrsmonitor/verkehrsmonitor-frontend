@@ -160,7 +160,6 @@ class Dashboard extends PureComponent {
                 legendLabel=""
                 timeRangeUnit={timeRangeUnit}
               />
-
               <StationsTable
                 items={tableData}
                 label="Alle ausgewählten Stationen im Überblick"

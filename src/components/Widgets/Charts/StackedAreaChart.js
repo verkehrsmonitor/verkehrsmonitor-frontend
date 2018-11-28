@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ResponsiveXYFrame from 'semiotic/lib/ResponsiveXYFrame';
+import XYFrame from 'semiotic/lib/XYFrame';
 import { scaleTime as d3ScaleTime } from 'd3-scale';
 import { numberFormat, getDateTickLabel, formatToLocalString } from '~/helper/utils';
 import isEqual from 'lodash.isequal';
@@ -101,35 +101,34 @@ export default class StackedAreaChart extends Component {
   }
 
   static defaultProps = {
-    margin: { left: 0, bottom: 0, right: 0, top: 16 },
-    domain: [],
+    margin: {
+      left: 0, bottom: 0, right: 0, top: 16
+    },
     withTooltip: false,
     showAxis: false,
     title: '',
     legendLabel: ''
   }
 
-  state = {
-    size: [600, 160]
-  }
-
   shouldComponentUpdate(nextProps) {
     return !isEqual(this.props, nextProps);
+  }
+
+  componentDidMount() {
+
   }
 
   getTooltipContent = ({ data, parentLine }) => {
     const { lineIDAccessor, yAccessor, timeRangeUnit } = this.props;
 
-    const metaInfo = [
-      {
-        label: parentLine.ttDataLabel,
-        value: formatToLocalString(data[yAccessor], 0)
-      },
-      {
-        label: 'Zeitpunkt',
-        value: getDateTickLabel(data.date, timeRangeUnit)
-      }
-    ];
+    const metaInfo = [{
+      label: parentLine.ttDataLabel,
+      value: formatToLocalString(data[yAccessor], 0)
+    },
+    {
+      label: 'Zeitpunkt',
+      value: getDateTickLabel(data.date, timeRangeUnit)
+    }];
 
     return (
       <Tooltip
@@ -154,37 +153,40 @@ export default class StackedAreaChart extends Component {
     return data.map((entry, i) => (i % mod === 0 && entry.date)).filter(item => item);
   }
 
-  getAxis = () =>
-    [
-      {
-        orient: 'left',
-        ticks: 3,
-        tickFormat: d => numberFormat(d),
-        tickSize: 0
-      },
-      {
-        orient: 'bottom',
-        tickValues: this.getTickValues(this.props.data),
-        tickFormat: d => getDateTickLabel(d, this.props.timeRangeUnit),
-        tickSize: 0,
-        tickLineGenerator: ({ xy }) => (
-          <path
-            key={`${xy.y1} - ${xy.x1}`}
-            style={{ fill: config.colors.lightgrey, stroke: config.colors.midgrey }}
-            d={`M${xy.x1},${xy.y1 - 5}L${xy.x2},${xy.y1 - 5}L${xy.x2},${xy.y1 + 5}L${xy.x1},${xy.y1 + 5}Z`}
-          />
-        )
-      }
-    ]
+  getAxis = () => [
+    {
+      orient: 'left',
+      ticks: 3,
+      tickFormat: d => numberFormat(d),
+      tickSize: 0
+    },
+    {
+      orient: 'bottom',
+      tickValues: this.getTickValues(this.props.data),
+      tickFormat: d => getDateTickLabel(d, this.props.timeRangeUnit),
+      tickSize: 0,
+      tickLineGenerator: ({ xy }) => (
+        <path
+          key={`${xy.y1} - ${xy.x1}`}
+          style={{ fill: config.colors.lightgrey, stroke: config.colors.midgrey }}
+          d={`M${xy.x1},${xy.y1 - 5}L${xy.x2},${xy.y1 - 5}L${xy.x2},${xy.y1 + 5}L${xy.x1},${xy.y1 + 5}Z`}
+        />
+      )
+    }
+  ]
 
-  getAnnotionConfig = () =>
-    [
-      { type: 'frame-hover' },
-      {
-        type: 'highlight',
-        style: d => ({ fill: d.color, strokeWidth: 0 })
-      }
-    ]
+  getAnnotionConfig = () => [
+    { type: 'frame-hover' },
+    {
+      type: 'highlight',
+      style: d => ({ fill: d.color, strokeWidth: 0 })
+    }
+  ]
+
+  getDimension() {
+    const bounds = this.wrapper ? this.wrapper.getBoundingClientRect() : false;
+    return bounds ? [bounds.width - 32, 160] : [100, 160];
+  }
 
   render() {
     const {
@@ -199,8 +201,10 @@ export default class StackedAreaChart extends Component {
       legendLabel
     } = this.props;
 
+    const dimensions = this.getDimension();
+
     return (
-      <StyledStackedAreaChartWrapper>
+      <StyledStackedAreaChartWrapper ref={(ref) => { this.wrapper = ref; }}>
         <StyledStackedAreaChart>
           <TitleWrapper>
             <ChartTitle>{title}</ChartTitle>
@@ -209,9 +213,8 @@ export default class StackedAreaChart extends Component {
               items={data}
             />
           </TitleWrapper>
-          <ResponsiveXYFrame
-            size={this.state.size}
-            responsiveWidth
+          <XYFrame
+            size={dimensions}
             lines={data}
             xScaleType={d3ScaleTime()}
             lineDataAccessor="data"
