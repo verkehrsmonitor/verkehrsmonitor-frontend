@@ -26,16 +26,6 @@ In order to change the project base path, run:
 $ BASENAME='/basename/' npm run build
 ```
 
-## Commit Style
-Please add the Story ID to the commit message
-```sh
-$ git commit -m"#12 feat(Navigation) implement basic…"
-```
-
-## Helper
-getBasePath(),
-getImagePath(filename)
-
 
 ## Testserver
 [Production](https://mfund-dashboard.netlify.com/)
