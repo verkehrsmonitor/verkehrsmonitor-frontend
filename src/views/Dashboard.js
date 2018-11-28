@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
+import CreditLine from '~/components/CreditLine';
 import * as AppActions from '~/modules/App/State';
 import * as FilterBarActions from '~/modules/FilterBar/State';
 import { getTimeRangeLabel } from '~/helper/utils';
@@ -169,7 +170,9 @@ class Dashboard extends PureComponent {
                 hasSelectedItem={!!activeStation}
               />
             </WidgetWrapper>
-            {/* <CreditLine /> */}
+          </ViewSection>
+          <ViewSection css={{ paddingTop: 0 }}>
+            <CreditLine />
           </ViewSection>
         </StyledDashboard>
       </Fragment>
