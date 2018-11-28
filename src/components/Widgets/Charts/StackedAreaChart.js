@@ -189,7 +189,6 @@ export default class StackedAreaChart extends Component {
 
   setDimensions() {
     const bounds = this.wrapper ? this.wrapper.getBoundingClientRect() : false;
-    console.log(this.wrapper);
     this.setState({
       dimensions: bounds ? [bounds.width - 32, 160] : [100, 160]
     });
@@ -207,8 +206,6 @@ export default class StackedAreaChart extends Component {
       title,
       legendLabel
     } = this.props;
-
-    console.log(this.state.dimensions);
 
     return (
       <StyledStackedAreaChartWrapper ref={(ref) => { this.wrapper = ref; }}>
