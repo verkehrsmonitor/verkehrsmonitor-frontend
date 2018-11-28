@@ -10,7 +10,7 @@ const StyledCreditLine = styled.div`
 export default () => (
   <StyledCreditLine>
     <p>
-      Datenquelle: <a href="https://www.bast.de/BASt_2017/DE/Verkehrstechnik/Fachthemen/v2-verkehrszaehlung/Verkehrszaehlung.html" target="_blank" rel="noopener noreferrer">Automatische Zählstellen auf Autobahnen und Bundesstraßen</a> (<a href="https://www.bast.de/BASt_2017/DE/Home/home_node.html" target="_blank" rel="noopener noreferrer">Bast</a>).
+      Datenquelle: <a href="https://www.bast.de/BASt_2017/DE/Verkehrstechnik/Fachthemen/v2-verkehrszaehlung/Verkehrszaehlung.html" target="_blank" rel="noopener noreferrer">Automatische Zählstellen auf Autobahnen und Bundesstraßen</a> (<a href="https://www.bast.de/BASt_2017/DE/Home/home_node.html" target="_blank" rel="noopener noreferrer">BASt</a>).
       Umsetzung: <a href="https://webkid.io/" target="_blank" rel="noopener noreferrer">webkid</a>
     </p>
   </StyledCreditLine>
