@@ -26,7 +26,6 @@ In order to change the project base path, run:
 $ BASENAME='/basename/' npm run build
 ```
 
+### Code
 
-## Testserver
-[Production](https://mfund-dashboard.netlify.com/)
-[Staging](https://develop--mfund-dashboard.netlify.com/)
+This project is based on https://github.com/wbkd/react-starter
