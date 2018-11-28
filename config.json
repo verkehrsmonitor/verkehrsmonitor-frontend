@@ -1,0 +1,92 @@
+{
+  "devUrl": "http://localhost:8080",
+  "prodUrl": "http://localhost:8080",
+  "api": {
+    "serverUrl": "https://traffic-vis.webkid.io",
+    "baseUrl": "/api/v2",
+    "dataPath": "/data",
+    "stationsPath": "/stations",
+    "rangePath": "/range",
+    "nearPath": "/near",
+    "roadGeoPath": "https://traffic-vis.webkid.io/data/geo",
+    "statesGeoPath": "https://traffic-vis.webkid.io/data/bundeslaender.json",
+    "dataKeys": ["total_1", "total_2", "truck_1", "truck_2", "car_1", "car_2", "bus_1", "bus_2"]
+  },
+  "filter": {
+    "roadType": [
+      { "label": "Autobahn", "value": "A" },
+      { "label": "Bundesstraße", "value": "B" }
+    ],
+    "timeRange": {
+      "day": ["2016-07-13", "2016-07-14"],
+      "month": ["2016-01-01", "2016-07-31"],
+      "year": ["2003-01-01", "2016-12-31"],
+      "minMax": ["2003-01-01", "2016-12-31"]
+    }
+  },
+  "map": {
+    "tileUrl": "https://api.mapbox.com/styles/v1/moklick/cjja39v4q0ol82so0cgf0v3ne/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW9rbGljayIsImEiOiJCa1Z5dGN3In0.O90iOz45MNXs89_0-P5qKA",
+    "attribution": "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>, &copy; <a href='https://carto.com/attribution'>CARTO</a>",
+    "mapBounds": [
+      [47.54, 6],
+      [54.77, 15]
+    ],
+    "maxBounds": [
+      [60, 18],
+      [40, 0]
+    ],
+    "maxZoom": 10,
+    "minZoom": 5.5
+  },
+  "colors": {
+    "lightgrey": "#F9F9F9",
+    "midgrey": "#9B9B9B",
+    "darkgrey": "#4A4A4A",
+    "maingrey": "#222222",
+    "white": "#FFFFFF",
+    "highlight": "#1890ff",
+    "blue": "#30B0F6",
+    "charts": ["#30B0F6", "#FFEB3B", "#00C853", "#2196F3"],
+    "roads": {"A": "#4A90E2", "B": "#FFCC00"}
+  },
+  "timeRanges": {
+    "measures": {
+      "label": "Tag",
+      "unit": "days",
+      "format": "DD.MM – hh:mm"
+    },
+    "by_day": {
+      "label": "Tag",
+      "unit": "days",
+      "format": "dd. - DD.MM"
+    },
+    "by_month": {
+      "label": "Monat",
+      "unit": "months",
+      "format": "MMMM YYYY"
+    },
+    "by_year": {
+      "label": "Jahr",
+      "unit": "years",
+      "format": "YYYY"
+    }
+  },
+  "states": {
+    "BB": "Brandenburg",
+    "BE": "Berlin",
+    "HB": "Bremen",
+    "BW": "Baden Württemberg",
+    "BY": "Bayern",
+    "HH": "Hamburg",
+    "HE": "Hessen",
+    "MV": "Mecklenburg Vorpommern",
+    "NI": "Niedersachsen",
+    "NW": "Nordrhein Westfalen",
+    "RP": "Rheinland Pfalz",
+    "SH": "Schleswig Holstein",
+    "SL": "Saarland",
+    "SN": "Sachsen",
+    "ST": "Sachsen Anhalt",
+    "TH": "Thüringen"
+  }
+}
