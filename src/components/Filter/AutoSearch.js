@@ -9,9 +9,9 @@ const StyledAntAutoComplete = styled(AntAutoComplete)`
 
 export default class AutoSearch extends PureComponent {
   // hook for onClear
-  onChange = (val) => {
+  onChange = val => {
     if (!val) this.props.onSelect(null);
-  }
+  };
 
   render() {
     return (
@@ -21,8 +21,12 @@ export default class AutoSearch extends PureComponent {
         placeholder={this.props.placeholder}
         onSelect={this.props.onSelect}
         onChange={this.onChange}
+        disabled={!config.isOnline}
         filterOption={(inputValue, option) =>
-          option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+          option.props.children
+            .toUpperCase()
+            .indexOf(inputValue.toUpperCase()) !== -1
+        }
       />
     );
   }

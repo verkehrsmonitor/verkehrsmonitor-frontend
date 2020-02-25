@@ -22,18 +22,20 @@ export default class Select extends PureComponent {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     value: PropTypes.string
-  }
+  };
 
   static defaultProps = {
     label: '',
     placeholder: '',
     value: undefined
-  }
+  };
 
   getOptions = () =>
     this.props.options.map(option => (
-      <Option key={option.key} value={option.key}>{option.label}</Option>
-    ))
+      <Option key={option.key} value={option.key}>
+        {option.label}
+      </Option>
+    ));
 
   render() {
     const { label, placeholder, onChange, value } = this.props;
@@ -50,8 +52,12 @@ export default class Select extends PureComponent {
             onChange={onChange}
             allowClear
             showSearch
+            disabled={!config.isOnline}
             filterOption={(input, option) =>
-              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              option.props.children
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            }
             value={value || undefined}
           >
             {this.getOptions()}

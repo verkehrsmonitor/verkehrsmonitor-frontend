@@ -1,4 +1,5 @@
 {
+  "isOnline": false,
   "devUrl": "http://localhost:8080",
   "prodUrl": "http://localhost:8080",
   "api": {
@@ -13,9 +14,14 @@
     "dataKeys": ["total_1", "total_2", "truck_1", "truck_2", "car_1", "car_2", "bus_1", "bus_2"]
   },
   "filter": {
-    "roadType": [
-      { "label": "Autobahn", "value": "A" },
-      { "label": "Bundesstraße", "value": "B" }
+    "roadType": [{
+        "label": "Autobahn",
+        "value": "A"
+      },
+      {
+        "label": "Bundesstraße",
+        "value": "B"
+      }
     ],
     "timeRange": {
       "day": ["2016-07-13", "2016-07-14"],
@@ -47,7 +53,10 @@
     "highlight": "#1890ff",
     "blue": "#30B0F6",
     "charts": ["#30B0F6", "#FFEB3B", "#00C853", "#2196F3"],
-    "roads": {"A": "#4A90E2", "B": "#FFCC00"}
+    "roads": {
+      "A": "#4A90E2",
+      "B": "#FFCC00"
+    }
   },
   "timeRanges": {
     "measures": {

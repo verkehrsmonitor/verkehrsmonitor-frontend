@@ -11,16 +11,19 @@ export default class YearPicker extends PureComponent {
     endValue: this.props.values[1].year(),
     hasError: false,
     options: getListInRange(this.props.timeRangeMinMax.map(m => m.year()))
-  }
+  };
 
   getOptions = (option, key) => (
-    <Option key={key} value={option}>{option}</Option>
-  )
+    <Option key={key} value={option}>
+      {option}
+    </Option>
+  );
 
   handleChange = (val, type) => {
     const { startValue, endValue } = this.state;
 
-    const startDateStr = type === 'start' ? `01-01-${val}` : `01-01-${startValue}`;
+    const startDateStr =
+      type === 'start' ? `01-01-${val}` : `01-01-${startValue}`;
     const endDateStr = type === 'end' ? `31-12-${val}` : `31-12-${endValue}`;
     const startDate = moment(startDateStr, 'DD-MM-YYYY');
     const endDate = moment(endDateStr, 'DD-MM-YYYY');
@@ -37,7 +40,7 @@ export default class YearPicker extends PureComponent {
       endValue: endDate.year(),
       hasError: false
     });
-  }
+  };
 
   render() {
     const { hasError, startValue, endValue, options } = this.state;
@@ -49,13 +52,17 @@ export default class YearPicker extends PureComponent {
         <AntSelect
           defaultValue={startValue}
           onChange={val => this.handleChange(val, 'start')}
+          disabled={!config.isOnline}
         >
-          {startOptions.map(option => this.getOptions(option, `start-${option}`))}
+          {startOptions.map(option =>
+            this.getOptions(option, `start-${option}`)
+          )}
         </AntSelect>
 
         <AntSelect
           defaultValue={endValue}
           onChange={val => this.handleChange(val, 'end')}
+          disabled={!config.isOnline}
         >
           {endOptions.map(option => this.getOptions(option, `end-${option}`))}
         </AntSelect>

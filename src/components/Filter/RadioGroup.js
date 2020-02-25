@@ -8,7 +8,7 @@ import RadioButton from './RadioButton';
 
 const { Group: AntRadioGroup } = AntRadio;
 
-const StyledAntRadioGroup = styled(AntRadioGroup)`  
+const StyledAntRadioGroup = styled(AntRadioGroup)`
   .ant-radio-button-wrapper {
     font-size: 12px;
   }
@@ -19,15 +19,17 @@ export default class RadioGroup extends PureComponent {
     buttons: PropTypes.arrayOf(PropTypes.object),
     currentValue: PropTypes.string,
     handler: PropTypes.func.isRequired
-  }
+  };
 
   static defaultProps = {
     buttons: [],
     currentValue: ''
-  }
+  };
 
-  renderButtons = () => this.props.buttons.map(button =>
-    <RadioButton key={`radio-${button.label}`} {...button} />);
+  renderButtons = () =>
+    this.props.buttons.map(button => (
+      <RadioButton key={`radio-${button.label}`} {...button} />
+    ));
 
   render() {
     return (
@@ -37,6 +39,7 @@ export default class RadioGroup extends PureComponent {
           <StyledAntRadioGroup
             value={this.props.currentValue}
             onChange={evt => this.props.handler(evt.target.value)}
+            disabled={!config.isOnline}
           >
             {this.renderButtons()}
           </StyledAntRadioGroup>

@@ -26,97 +26,101 @@ const rangeComps = {
 };
 
 export default class RangePicker extends PureComponent {
-    static propTypes = {
-      timeRangeMinMax: PropTypes.arrayOf(momentPropTypes.momentObj).isRequired,
-      values: PropTypes.arrayOf(momentPropTypes.momentObj),
-      onChange: PropTypes.func.isRequired
+  static propTypes = {
+    timeRangeMinMax: PropTypes.arrayOf(momentPropTypes.momentObj).isRequired,
+    values: PropTypes.arrayOf(momentPropTypes.momentObj),
+    onChange: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    values: []
+  };
+
+  state = {
+    startValue: this.props.values[0],
+    endValue: this.props.values[1],
+    endOpen: false
+  };
+
+  onChange = (field, value) => {
+    this.setState({ [field]: value });
+  };
+
+  onStartChange = value => {
+    this.onChange('startValue', value);
+  };
+
+  onEndChange = value => {
+    this.onChange('endValue', value);
+    this.props.onChange([this.state.startValue, value]);
+  };
+
+  handleStartOpenChange = open => {
+    if (!open) {
+      this.setState({ endOpen: true });
     }
+  };
 
-    static defaultProps = {
-      values: []
-    }
+  handleEndOpenChange = open => {
+    this.setState({ endOpen: open });
+  };
 
-    state = {
-      startValue: this.props.values[0],
-      endValue: this.props.values[1],
-      endOpen: false
-    };
+  // out of bounds
+  disableDate = date =>
+    date.isBefore(this.props.timeRangeMinMax[0]) ||
+    date.isAfter(this.props.timeRangeMinMax[1]);
 
-    onChange = (field, value) => {
-      this.setState({ [field]: value });
-    }
+  disabledStartDate = startValue => {
+    const { endValue } = this.state;
+    if (!startValue || !endValue) return false;
+    return this.disableDate(startValue);
+  };
 
-    onStartChange = (value) => {
-      this.onChange('startValue', value);
-    }
+  disabledEndDate = endValue => {
+    const { startValue } = this.state;
+    if (!endValue || !startValue) return false;
 
-    onEndChange = (value) => {
-      this.onChange('endValue', value);
-      this.props.onChange([this.state.startValue, value]);
-    }
+    const { rangeType } = this.props;
+    const { getLimit } = rangeComps[rangeType];
+    const isInLimit = getLimit(endValue, startValue);
 
-    handleStartOpenChange = (open) => {
-      if (!open) {
-        this.setState({ endOpen: true });
-      }
-    }
+    return (
+      endValue.valueOf() <= startValue.valueOf() ||
+      isInLimit ||
+      this.disableDate(endValue)
+    );
+  };
 
-    handleEndOpenChange = (open) => {
-      this.setState({ endOpen: open });
-    }
+  render() {
+    const { rangeType } = this.props;
+    const { startValue, endValue, endOpen } = this.state;
+    const { comp: RangeComp, format } = rangeComps[rangeType];
 
-    // out of bounds
-    disableDate = date =>
-      date.isBefore(this.props.timeRangeMinMax[0]) || date.isAfter(this.props.timeRangeMinMax[1]);
-
-    disabledStartDate = (startValue) => {
-      const { endValue } = this.state;
-      if (!startValue || !endValue) return false;
-      return this.disableDate(startValue);
-    }
-
-    disabledEndDate = (endValue) => {
-      const { startValue } = this.state;
-      if (!endValue || !startValue) return false;
-
-      const { rangeType } = this.props;
-      const { getLimit } = rangeComps[rangeType];
-      const isInLimit = getLimit(endValue, startValue);
-
-      return (endValue.valueOf() <= startValue.valueOf()) ||
-             isInLimit ||
-             this.disableDate(endValue);
-    }
-
-    render() {
-      const { rangeType } = this.props;
-      const { startValue, endValue, endOpen } = this.state;
-      const { comp: RangeComp, format } = rangeComps[rangeType];
-
-      return (
-        <div>
-          <RangeComp
-            allowClear={false}
-            disabledDate={this.disabledStartDate}
-            format={format}
-            value={startValue}
-            placeholder="Startdatum wählen"
-            onChange={this.onStartChange}
-            onOpenChange={this.handleStartOpenChange}
-          />
-          <RangeComp
-            allowClear={false}
-            disabledDate={this.disabledEndDate}
-            format={format}
-            value={endValue}
-            placeholder="Enddatum wählen"
-            onChange={this.onEndChange}
-            open={endOpen}
-            onOpenChange={this.handleEndOpenChange}
-            showToday={false}
-          />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <RangeComp
+          allowClear={false}
+          disabledDate={this.disabledStartDate}
+          format={format}
+          value={startValue}
+          placeholder="Startdatum wählen"
+          onChange={this.onStartChange}
+          onOpenChange={this.handleStartOpenChange}
+          disabled={!config.isOnline}
+        />
+        <RangeComp
+          allowClear={false}
+          disabledDate={this.disabledEndDate}
+          format={format}
+          value={endValue}
+          placeholder="Enddatum wählen"
+          onChange={this.onEndChange}
+          open={endOpen}
+          onOpenChange={this.handleEndOpenChange}
+          showToday={false}
+          disabled={!config.isOnline}
+        />
+      </div>
+    );
+  }
 }
-

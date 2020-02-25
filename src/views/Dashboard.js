@@ -24,6 +24,7 @@ import StationsTable from '~/components/Widgets/StationsTable';
 import StackedAreaChart from '~/components/Widgets/Charts/StackedAreaChart';
 import Spinner from '~/components/Common/Spinner';
 import FilterBar from '~/modules/FilterBar';
+import OfflineMessage from '~/components/Common/OfflineMessage';
 
 const ViewSection = styled(Section)`
   display: flex;
@@ -52,29 +53,37 @@ class Dashboard extends PureComponent {
   }
 
   componentDidMount() {
+    if (!config.isOnline) {
+      return null;
+    }
     this.props.dispatch(AppActions.loadStations());
     this.props.dispatch(AppActions.loadStatesGeoData());
     this.props.dispatch(AppActions.loadInTimeRange());
   }
 
   // map handler
-  handleHoveredStation = id => this.props.dispatch(AppActions.setHighlightedStation(id));
+  handleHoveredStation = id =>
+    this.props.dispatch(AppActions.setHighlightedStation(id));
 
-  handleOnFeatureClick = id => this.props.dispatch(FilterBarActions.setActiveStation(id));
+  handleOnFeatureClick = id =>
+    this.props.dispatch(FilterBarActions.setActiveStation(id));
 
-  handleBoundsChanged = (bounds) => {
+  handleBoundsChanged = bounds => {
     this.props.dispatch(AppActions.setMapBounds(bounds));
     this.setState({ isDisabled: false });
-  }
+  };
 
-  handleCloseRoadControlPanel = () => this.props.dispatch(FilterBarActions.resetFilter());
+  handleCloseRoadControlPanel = () =>
+    this.props.dispatch(FilterBarActions.resetFilter());
 
   handleOnZoomStart = () => this.setState({ isDisabled: true });
 
   // table handler
-  handleSearchChanged = id => this.props.dispatch(FilterBarActions.setActiveStation(id))
+  handleSearchChanged = id =>
+    this.props.dispatch(FilterBarActions.setActiveStation(id));
 
-  handleOnSelectRow = id => this.props.dispatch(FilterBarActions.setActiveStation(id))
+  handleOnSelectRow = id =>
+    this.props.dispatch(FilterBarActions.setActiveStation(id));
 
   render() {
     const {
@@ -99,7 +108,8 @@ class Dashboard extends PureComponent {
       <Fragment>
         <FilterBar />
         <StyledDashboard>
-          {isLoading && <Spinner />}
+          {isLoading && config.isOnline && <Spinner />}
+          {!config.isOnline && <OfflineMessage />}
           <ViewSection>
             <WidgetWrapper>
               <MapWrapper
@@ -136,7 +146,7 @@ class Dashboard extends PureComponent {
               <BigNumber
                 indicator="Anteil Lkw"
                 info="des gesamten Verkehrs"
-                value={((stats.truck * 100) / stats.total) || 0}
+                value={(stats.truck * 100) / stats.total || 0}
                 suffix="%"
                 precision={1}
                 isDisabled={isDisabled || isLoading}
@@ -144,7 +154,7 @@ class Dashboard extends PureComponent {
               <BigNumber
                 indicator="Anteil Bus"
                 info="des gesamten Verkehrs"
-                value={((stats.bus * 100) / stats.total) || 0}
+                value={(stats.bus * 100) / stats.total || 0}
                 suffix="%"
                 precision={1}
                 isDisabled={isDisabled || isLoading}
@@ -180,21 +190,19 @@ class Dashboard extends PureComponent {
   }
 }
 
-export default connect(
-  (state, props) => ({
-    isLoading: state.AppState.isLoading,
-    activeStation: state.FilterBarState.activeStation,
-    activeRoad: state.FilterBarState.activeRoad,
-    activeState: state.FilterBarState.activeState,
-    timeRange: state.FilterBarState.timeRange,
-    highlightedStation: state.AppState.highlightedStation,
-    roadType: state.FilterBarState.roadType,
-    timeRangeUnit: state.AppState.timeRangeUnit,
-    statesGeoData: state.AppState.statesGeoData,
-    roadGeoData: state.AppState.roadGeoData,
-    stations: getFilteredStations(state, props),
-    stats: getStats(state, props),
-    totalValuesForTypeInRange: getTotalValuesForTypeInRange(state, props),
-    tableData: getTableData(state, props)
-  })
-)(Dashboard);
+export default connect((state, props) => ({
+  isLoading: state.AppState.isLoading,
+  activeStation: state.FilterBarState.activeStation,
+  activeRoad: state.FilterBarState.activeRoad,
+  activeState: state.FilterBarState.activeState,
+  timeRange: state.FilterBarState.timeRange,
+  highlightedStation: state.AppState.highlightedStation,
+  roadType: state.FilterBarState.roadType,
+  timeRangeUnit: state.AppState.timeRangeUnit,
+  statesGeoData: state.AppState.statesGeoData,
+  roadGeoData: state.AppState.roadGeoData,
+  stations: getFilteredStations(state, props),
+  stats: getStats(state, props),
+  totalValuesForTypeInRange: getTotalValuesForTypeInRange(state, props),
+  tableData: getTableData(state, props)
+}))(Dashboard);
